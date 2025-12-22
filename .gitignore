@@ -1,0 +1,11 @@
+data/raw/
+data/processed/
+models/
+*.pkl
+*.joblib
+.DS_Store
+__pycache__/
+*.pyc
+.env
+.vscode/
+notebooks/data_preprocessing.py
