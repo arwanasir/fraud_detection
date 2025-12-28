@@ -187,7 +187,7 @@ def build_ensemble_model(X_train, y_train):
     plt.title('Top 10 Feature Importance - Random Forest')
     plt.gca().invert_yaxis()
     plt.tight_layout()
-    plt.savefig('models/rf_feature_importance.png',
+    plt.savefig('../models/rf_feature_importance.png',
                 dpi=300, bbox_inches='tight')
     plt.show()
 
