@@ -194,10 +194,41 @@ def build_ensemble_model(X_train, y_train):
     return rf_model
 
 
+def basic_hyperparameter_tuning(X_train, y_train):
+    from sklearn.model_selection import GridSearchCV
+
+    print("\nBasic Hyperparameter Tuning for Random Forest")
+
+    param_grid = {
+        'n_estimators': [50, 100],
+        'max_depth': [5, 10],
+        'min_samples_split': [10, 20]
+    }
+
+    rf = RandomForestClassifier(random_state=42, class_weight='balanced')
+
+    grid_search = GridSearchCV(
+        rf,
+        param_grid,
+        cv=3,
+        scoring='average_precision',
+        n_jobs=-1
+    )
+
+    sample_size = min(5000, len(X_train))
+    X_sample = X_train.iloc[:sample_size]
+    y_sample = y_train.iloc[:sample_size]
+
+    grid_search.fit(X_sample, y_sample)
+
+    print(f"Best parameters: {grid_search.best_params_}")
+    print(f"Best AUC-PR: {grid_search.best_score_:.4f}")
+
+    return grid_search.best_estimator_, grid_search.best_params_
+
+
 def perform_cross_validation(model, X_train, y_train, model_name="Model", cv=5):
-    print(f"\n{'='*60}")
     print(f"STRATIFIED {cv}-FOLD CROSS VALIDATION - {model_name.upper()}")
-    print('='*60)
 
     scoring = {
         'auc_pr': 'average_precision',
